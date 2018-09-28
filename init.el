@@ -9,10 +9,17 @@
 (setq package-list '(zenburn-theme auto-complete exec-path-from-shell  ess-view ess-R-data-view ensime sbt-mode scala-mode ))
 
 (require 'package)
-(setq package-archives 
-  '(("gnu" . "http://elpa.gnu.org/packages/")
-("marmalade" . "http://marmalade-repo.org/packages/")
-("melpa" . "http://melpa.org/packages/")))
+(setq
+
+package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+
+                    ("org" . "http://orgmode.org/elpa/")
+
+                    ("melpa" . "http://melpa.org/packages/")
+
+                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
+
+package-archive-priorities '(("melpa-stable" . 1)))
 
 ; activate all the packages (in particular autoloads)
 
