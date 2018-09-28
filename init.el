@@ -6,7 +6,7 @@
 ;; You may delete these explanatory comments.
 
 (package-initialize)
-(setq package-list '(zenburn-theme auto-complete exec-path-from-shell  ess-view ess-R-data-view ensime ))
+(setq package-list '(zenburn-theme auto-complete exec-path-from-shell  ess-view ess-R-data-view ensime sbt-mode scala-mode ))
 
 (require 'package)
 (setq package-archives 
@@ -25,11 +25,6 @@
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
-
-
-
-
-
 
 (load-theme 'zenburn t)
 (require 'exec-path-from-shell)
