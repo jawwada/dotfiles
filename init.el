@@ -4,14 +4,32 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
 
+(package-initialize)
+(setq package-list '(zenburn-theme auto-complete exec-path-from-shell  ess-view ess-R-data-view ensime ))
 
 (require 'package)
 (setq package-archives 
   '(("gnu" . "http://elpa.gnu.org/packages/")
 ("marmalade" . "http://marmalade-repo.org/packages/")
 ("melpa" . "http://melpa.org/packages/")))
+
+; activate all the packages (in particular autoloads)
+
+
+; fetch the list of packages available 
+(unless package-archive-contents
+  (package-refresh-contents))
+
+; install the missing packages
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+
+
+
+
 
 (load-theme 'zenburn t)
 (require 'exec-path-from-shell)
