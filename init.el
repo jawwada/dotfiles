@@ -6,7 +6,7 @@
 ;; You may delete these explanatory comments.
 
 
-(setq package-list '(zenburn-theme auto-complete exec-path-from-shell  ess-view
+(setq package-list '(solarized-theme monokai-theme zenburn-theme auto-complete exec-path-from-shell  ess-view
 				   ess-R-data-view ensime sbt-mode scala-mode winum helm ivy counsel))
 
 (require 'package)
@@ -75,7 +75,7 @@ package-archive-priorities '(("melpa" . 1)))
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
 ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-(load-theme 'zenburn t)
+(load-theme 'solarized-light t)
 (when (memq window-system '(mac ns))
       (exec-path-from-shell-initialize))
 
@@ -100,6 +100,27 @@ package-archive-priorities '(("melpa" . 1)))
 
 (setq ess-use-auto-complete 'script-only)
 (define-key ac-completing-map "\t" 'ac-complete)
+
+
+(setq ;; foreground and background
+      monokai-foreground     "#ABB2BF"
+      monokai-background     "#282C34"
+      ;; highlights and comments
+      monokai-comments       "#F8F8F0"
+      monokai-emphasis       "#282C34"
+      monokai-highlight      "#FFB269"
+      monokai-highlight-alt  "#66D9EF"
+      monokai-highlight-line "#1B1D1E"
+      monokai-line-number    "#F8F8F0"
+      ;; colours
+      monokai-blue           "#61AFEF"
+      monokai-cyan           "#56B6C2"
+      monokai-green          "#98C379"
+      monokai-gray           "#3E4451"
+      monokai-violet         "#C678DD"
+      monokai-red            "#E06C75"
+      monokai-orange         "#D19A66"
+      monokai-yellow         "#E5C07B")
 
 (load "ess-autoloads.el")
 ;;We have "sbt" and "scala" in /usr/local/bin so we add this path to the PATH environment
