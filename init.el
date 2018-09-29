@@ -1,3 +1,4 @@
+
 ;; load emacs 24's package system. Add MELPA repository.
 
 ;; Added by Package.el.  This must come before configurations of
@@ -5,9 +6,19 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 
-
-(setq package-list '(solarized-theme monokai-theme zenburn-theme auto-complete exec-path-from-shell  ess-view
-				   ess-R-data-view ensime sbt-mode scala-mode winum helm ivy counsel))
+(setq package-list '(solarized-theme monokai-theme
+				     zenburn-theme
+				     auto-complete
+				     exec-path-from-shell
+				     ess-view
+				     ess-R-data-view
+				     ensime
+				     sbt-mode
+				     scala-mode
+				     winum
+				     dashboard
+				     ivy
+				     counsel))
 
 (require 'package)
 (setq
@@ -20,7 +31,7 @@ package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 
                     ("melpa-stable" . "http://stable.melpa.org/packages/"))
 
-package-archive-priorities '(("melpa" . 1)))
+package-archive-priorities '(("melpa-stable" . 1)))
 
 ; activate all the packages (in particular autoloads)
 
@@ -34,8 +45,29 @@ package-archive-priorities '(("melpa" . 1)))
   (unless (package-installed-p package)
     (package-install package)))
 
+;; require the packages, I have yet to see whether this step is needed or not, after (require 'package) in the start. Just to be safe
+(require 'exec-path-from-shell)
+(require 'ess-view)
+(require 'ess-site)
+(require 'ess-r-mode)
+(require 'ensime)
+(require 'auto-complete)
+(require 'auto-complete-config)
+
+
+;; enabling modes by default
+(recentf-mode 1)
 (counsel-mode 1)
 (ivy-mode 1)
+(load-theme 'solarized-light t)
+(cua-mode t)
+
+
+;;dashboard setting
+(dashboard-setup-startup-hook)
+(setq dashboard-banner-logo-title "Welcome to Ahmed's Emacs")
+
+;;ivy settings
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
 (global-set-key "\C-s" 'swiper)
@@ -56,7 +88,7 @@ package-archive-priorities '(("melpa" . 1)))
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 
 
-
+;;winum settings
 (setq winum-keymap
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "C-`") 'winum-select-window-by-number)
@@ -72,23 +104,22 @@ package-archive-priorities '(("melpa" . 1)))
       (define-key map (kbd "M-8") 'winum-select-window-8)
       map))
 (winum-mode)
-;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-(load-theme 'solarized-light t)
+
+
+;;exec path from shell setting
 (when (memq window-system '(mac ns))
       (exec-path-from-shell-initialize))
 
-(recentf-mode 1)
+;; recent files menu settings
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
-(require 'auto-complete)
-(require 'auto-complete-config)
+
+;; auto complete settings
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/site-lisp/auto-complete/dict")
 (ac-config-default)
 (auto-complete-mode)
 
-
+;; ess , R settings
 (setq ess-ask-for-ess-directory nil) 
 (setq inferior-R-program-name "/usr/local/bin/R") 
 (setq ess-local-process-name "R") 
@@ -97,11 +128,16 @@ package-archive-priorities '(("melpa" . 1)))
 (setq comint-scroll-to-bottom-on-output t) 
 (setq comint-move-point-for-output t)
 (setq ess-eval-visibly-p nil)
-
 (setq ess-use-auto-complete 'script-only)
 (define-key ac-completing-map "\t" 'ac-complete)
+(load "ess-autoloads.el")
 
 
+;; Setting up SBT and scala. We have "sbt" and "scala" in /usr/local/bin so we add this path to the PATH environment
+(setq-default explicit-shell-file-name "/bin/bash")
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+;;monokai background settings, specific for monokai color theme only
 (setq ;; foreground and background
       monokai-foreground     "#ABB2BF"
       monokai-background     "#282C34"
@@ -122,15 +158,16 @@ package-archive-priorities '(("melpa" . 1)))
       monokai-orange         "#D19A66"
       monokai-yellow         "#E5C07B")
 
-(load "ess-autoloads.el")
-;;We have "sbt" and "scala" in /usr/local/bin so we add this path to the PATH environment
-(setq-default explicit-shell-file-name "/bin/bash")
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "bfdcbf0d33f3376a956707e746d10f3ef2d8d9caa1c214361c9c08f00a1c8409" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
  '(package-selected-packages
    (quote
     (helm ess-view ess-R-data-view ess ensime scala-mode zenburn-theme))))
