@@ -59,7 +59,8 @@ package-archive-priorities '(("melpa-stable" . 1))
         diff-hl
         adaptive-wrap
         ;; melpa packages
-        ;; mode-icons ; slows things down, can be buggy
+
+        mode-icons ; slows things down, can be buggy
         ein
         pdf-tools
         yasnippet
@@ -166,6 +167,8 @@ package-archive-priorities '(("melpa-stable" . 1))
                  "GPG_AGENT_INFO"
                  "SSH_AUTH_SOCK"
                  "SSH_AGENT_PID"
+                 "PATH"
+                 
                  ))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
@@ -704,6 +707,13 @@ package-archive-priorities '(("melpa-stable" . 1))
   (define-key ess-mode-map (kbd "<C-return>") 'ess-eval-region-or-function-or-paragraph-and-step)
   (define-key ess-mode-map (kbd "<C-S-return>") 'ess-eval-buffer)
 
+  ;; function for copying whole file to buffer
+  (defun copy-whole-buffer ()
+  "Copy entire buffer to clipboard"
+  (interactive)
+  (clipboard-kill-ring-save (point-min) (point-max)))
+
+  
   ;; set up when entering ess-mode
   (add-hook 'ess-mode-hook
             (lambda()
@@ -743,7 +753,7 @@ package-archive-priorities '(("melpa-stable" . 1))
 
 (with-eval-after-load "python"
   ;; try to get indent/completion working nicely
-  ;; readline support is wonky at the moment
+  ;; rpport is wonky at the moment
   (setq python-shell-completion-native-enable nil)
   ;; simple evaluation with C-ret
   (require 'eval-in-repl-python)
@@ -1225,7 +1235,3 @@ Will prompt you shell name when you type `C-u' before this command."
 (setq untitled-new-buffer-major-modes '(text-mode python-mode r-mode markdown-mode LaTeX-mode emacs-lisp-mode))
 ;; Change default buffer name.
 (setq untitled-new-buffer-default-name "*Untitled*")
-
-;; Start the server if it is not already running
-(require 'server)
-(unless (server-running-p) (server-start))
