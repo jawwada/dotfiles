@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp -*-
+ ;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
@@ -38,6 +38,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
+     yasnippet
      auto-completion
      better-defaults
      emacs-lisp
@@ -48,7 +49,6 @@ values."
      html
      org
      python
-     haskell
      (shell :variables
      shell-default-height 30
      shell-default-position 'bottom)
@@ -273,11 +273,11 @@ values."
    dotspacemacs-folding-method 'evil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode t
+   dotspacemacs-smartparens-strict-mode nil
    ;; If ,non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis t
+   dotspacemacs-smart-closing-parenthesis  t
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
@@ -311,8 +311,21 @@ before packages are loaded. If you are unsure, you should try in setting them in
  )
 
 (defun dotspacemacs/user-config ()
-  (require 'mouse3)
-  (global-set-key (kbd "<mouse-3>") 'mouse3-popup-menu)
+
+
+  (global-company-mode)
+;;; ielm support (for emacs lisp)
+  (setq eir-always-split-script-window t)
+
+  (require 'eval-in-repl-ielm)
+  ;; Evaluate expression in the current buffer.
+  (setq eir-ielm-eval-in-current-buffer t)
+  ;; for .el files
+  (define-key emacs-lisp-mode-map (kbd "<C-return>") 'eir-eval-in-ielm)
+  ;; for *scratch*
+  (define-key lisp-interaction-mode-map (kbd "<C-return>") 'eir-eval-in-ielm)
+  ;; for M-x info
+  (define-key Info-mode-map (kbd "<C-return>") 'eir-eval-in-ielm)
 
 
 (setq ispell-program-name "/usr/local/bin/aspell")
@@ -325,21 +338,32 @@ before packages are loaded. If you are unsure, you should try in setting them in
              (local-set-key (kbd "<C-return>") 'eir-eval-in-python)))
 ;; Shell support
 (require 'eval-in-repl-shell)
+
 (add-hook 'sh-mode-hook
           '(lambda()
              (local-set-key (kbd "C-<return>") 'eir-eval-in-shell)))
 ;; Version with opposite behavior to eir-jump-after-eval configuration
-(defun eir-eval-in-shell2 ()
-  "eval-in-repl for shell script (opposite behavior)
+  (defun eir-eval-in-shell2 ()
+    "eval-in-repl for shell script (opposite behavior)
 
 This version has the opposite behavior to the eir-jump-after-eval
 configuration when invoked to evaluate a line."
-  (interactive)
-  (let ((eir-jump-after-eval (not eir-jump-after-eval)))
-    (eir-eval-in-shell)))
-(add-hook 'sh-mode-hook
-          '(lambda()
-             (local-set-key (kbd "C-M-<return>") 'eir-eval-in-shell2)))
+
+    (interactive)
+    (let ((eir-jump-after-eval (not eir-jump-after-eval)))
+      (eir-eval-in-shell)))
+
+  (add-hook 'sh-mode-hook
+            '(lambda()
+               (local-set-key (kbd "C-M-<return>") 'eir-eval-in-shell2)))
+
+
+(require 'eval-in-repl-scala)
+(define-key scala-mode-map (kbd "<C-return>") 'eir-eval-in-scala)
+(define-key scala-mode-map (kbd "s-<return>") 'eir-eval-in-shell)
+
+"This version has the opposite behavior to the eir-jump-after-eval
+configuration when invoked to evaluate a line."
     (use-package osx-clipboard
       :config
       (progn
