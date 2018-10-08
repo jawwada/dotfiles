@@ -3,7 +3,7 @@ sudo apt-get update
 #install nvidia, if it is there
 #install some needed software
 sudo apt-get install terminator git vim gnome-tweak-tool  curl vlc inkscape
-setup control key to escape 
+#setup control key to escape 
 
 #install lastpass
 cd ../Downloads/
