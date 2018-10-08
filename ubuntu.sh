@@ -1,4 +1,4 @@
-
+#make sudo password less
 sudo apt-get update
 #install nvidia, if it is there
 #install some needed software
