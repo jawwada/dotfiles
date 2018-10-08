@@ -34,8 +34,8 @@ sudo make
 sudo make install
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 
-sudo apt-get install ispell
-sudo apt-get install aspell-de
+
+sudo apt-get install aspell
 emacsclient -c
 emacs --daemon
 
